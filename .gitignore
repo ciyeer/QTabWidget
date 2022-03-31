@@ -2,3 +2,8 @@
 Debug
 Release
 *.user
+*.opensdf
+*.sdf
+*.suo
+GeneratedFiles
+*.vcxproj.user
