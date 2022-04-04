@@ -178,6 +178,7 @@
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="draw_helper.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainwindow.cpp" />
     <ClCompile Include="qt_ext_tabbar.cpp" />
@@ -201,6 +202,8 @@
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="common_ui_define.h" />
+    <ClInclude Include="draw_helper.h" />
     <ClInclude Include="round_shadow_helper.h" />
     <ClInclude Include="ui_mainwindow.h" />
   </ItemGroup>

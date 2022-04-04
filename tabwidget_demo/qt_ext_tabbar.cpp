@@ -1,5 +1,6 @@
 #include <QPainter>
 
+#include "draw_helper.h"
 #include "qt_ext_tabbar.h"
 #include "round_shadow_helper.h"
 
@@ -7,77 +8,21 @@ QtExtTabBar::QtExtTabBar(QWidget *parent) : QTabBar(parent)
 {
 }
 
-QSize QtExtTabBar::tabSize() const
-{
-    return tabSizeHint(0);
-}
-
 QSize QtExtTabBar::tabSizeHint(int index) const
 {
-    return QSize(215,40);
+    if (index == count()-1 && draw_plus_btn_)
+        return tab_add_btn_size_;
+    return tab_size_;
 }
 
 void QtExtTabBar::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
     DrawTabBg(&painter);
-    DrawTabText(&painter);
+    if (draw_plus_btn_)
+        DrawPlusBtn(&painter);
     for(int index = 0 ; index < count(); index++)
     {
-        QRect rc = tabRect(index);
-//        rc = rc.marginsAdded(QMargins(-10, -10, -10, -10));
-//
-//        QStyleOptionTabV3 option;
-//        initStyleOption(&option, i);
-//
-//        //tab背景
-//        painter.setPen(Qt::NoPen);
-//        if(QStyle::State_MouseOver & option.state)
-//        {
-//            painter.setBrush(QColor(COLOR_HOVER));
-//        }
-//        else if(QStyle::State_Selected & option.state)
-//        {
-//            if(i == 0)
-//            {
-//                painter.setBrush(QColor(COLOR_SELECT_0));
-//            }
-//            else if(i == 1)
-//            {
-//                painter.setBrush(QColor(COLOR_SELECT_1));
-//            }
-//        }
-//        else
-//        {
-//            if(i == 0)
-//            {
-//                painter.setBrush(QColor(COLOR_NORMAL_0));
-//            }
-//            else if(i == 1)
-//            {
-//                painter.setBrush(QColor(COLOR_NORMAL_1));
-//            }
-//        }
-//        painter.drawRect(rc);
-//
-//        //tab文字
-//        painter.setPen(Qt::black);
-//        painter.setBrush(Qt::NoBrush);
-//        painter.drawText(rc,Qt::AlignCenter,tabText(i));
-//
-//        //红色角标
-//        if(i == 1)
-//        {
-//            QRect rect(0,0,30,30);
-//            rect.moveTopRight(rc.topRight());
-//
-//            painter.setPen(Qt::NoPen);
-//            painter.setBrush(QColor(COLOR_MARK));
-//            painter.drawEllipse(rect);
-//
-//            painter.setPen(QColor(Qt::white));
-//            painter.drawText(rect, Qt::AlignCenter, "99");
-//        }
     }
 }
 
@@ -85,6 +30,17 @@ void QtExtTabBar::mouseReleaseEvent(QMouseEvent *event)
 {
     int i = PointInTabRectIndex(event->pos());
     QTabBar::mouseReleaseEvent(event);
+}
+
+void QtExtTabBar::mousePressEvent(QMouseEvent *event)
+{
+    int index = PointInTabRectIndex(event->pos());
+    if (index == count()-1 && draw_plus_btn_) {
+        emit BtnClicked();
+        return;
+    }
+
+    QTabBar::mousePressEvent(event);
 }
 
 int QtExtTabBar::PointInTabRectIndex(const QPoint &point)
@@ -103,7 +59,8 @@ void QtExtTabBar::DrawTabBg(QPainter *painter)
     RoundShadowHelper helper(6,4);
     int border = helper.GetShadowWidth()/2.0;
     painter->save();
-    for (int index = 0; index < count(); index++) {
+    int tab_count = draw_plus_btn_ ? count()-1 : count();
+    for (int index = 0; index < tab_count; index++) {
         QRect rect = tabRect(index);
         QStyleOptionTabV3 option;
         initStyleOption(&option, index);
@@ -151,4 +108,25 @@ void QtExtTabBar::_drawTabBg(QPainter *painter, int index)
     else if(QStyle::State_MouseOver & option.state) {
         helper.FillRoundShadow(painter, draw_rect, QColor(214, 214, 214), 4);
     }
+}
+
+void QtExtTabBar::DrawPlusBtn(QPainter *painter)
+{
+    painter->save();
+    // DrawCircle::Draw(painter, tab_add_btn_size_);
+    int last_index = count()-1;
+    QStyleOptionTabV3 option;
+    initStyleOption(&option, last_index);
+    QRect real_rect = tabRect(last_index);
+    QRect draw_rect = QRect(QPoint(0, 0), tab_add_btn_size_);
+    draw_rect.moveCenter(real_rect.center());
+    QColor color;
+    if (QStyle::State_MouseOver & option.state) {
+        color = CIRCLE_BG_COLOR;
+    } else {
+        color = QColor(240, 240, 240);
+    }
+    DrawCircle::Draw(painter, draw_rect, color);
+    DrawCharacter::DrawPlus(painter, draw_rect);
+    painter->restore();
 }
