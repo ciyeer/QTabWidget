@@ -4,8 +4,40 @@
 #include "qt_ext_tabbar.h"
 #include "round_shadow_helper.h"
 
+
+class QExtTabBarStyle: public QProxyStyle
+{
+public:
+    virtual void drawPrimitive(PrimitiveElement pe, const QStyleOption *option, QPainter *painter,
+        const QWidget *widget = Q_NULLPTR) const override
+    {
+        if (pe == QStyle::PE_IndicatorArrowLeft) {
+            painter->save();
+            painter->setPen(Qt::red);
+            painter->drawRect(option->rect);
+            painter->restore();
+            QProxyStyle::drawPrimitive(pe, option, painter, widget);
+        } else if (pe == QStyle::PE_IndicatorArrowRight) {
+            QProxyStyle::drawPrimitive(pe, option, painter, widget);
+        } else{
+            QProxyStyle::drawPrimitive(pe, option, painter, widget);
+        }
+    }
+
+    virtual int 
+    pixelMetric(PixelMetric metric, const QStyleOption *option, const QWidget *widget) const override
+    {
+        if (PM_TabBarScrollButtonWidth == metric) {
+            return 30;
+        } else {
+            return QProxyStyle::pixelMetric(metric, option, widget);
+        }
+    }
+};
+
 QtExtTabBar::QtExtTabBar(QWidget *parent) : QTabBar(parent)
 {
+    this->setStyle(new QExtTabBarStyle());
 }
 
 QSize QtExtTabBar::tabSizeHint(int index) const
@@ -113,19 +145,12 @@ void QtExtTabBar::_drawTabBg(QPainter *painter, int index)
 void QtExtTabBar::DrawPlusBtn(QPainter *painter)
 {
     painter->save();
-    // DrawCircle::Draw(painter, tab_add_btn_size_);
     int last_index = count()-1;
     QStyleOptionTabV3 option;
     initStyleOption(&option, last_index);
-    QRect real_rect = tabRect(last_index);
     QRect draw_rect = QRect(QPoint(0, 0), tab_add_btn_size_);
-    draw_rect.moveCenter(real_rect.center());
-    QColor color;
-    if (QStyle::State_MouseOver & option.state) {
-        color = CIRCLE_BG_COLOR;
-    } else {
-        color = QColor(240, 240, 240);
-    }
+    draw_rect.moveCenter(tabRect(last_index).center());
+    QColor color = QStyle::State_MouseOver & option.state ? CIRCLE_BG_COLOR : NORMAL_TAB_COLOR;
     DrawCircle::Draw(painter, draw_rect, color);
     DrawCharacter::DrawPlus(painter, draw_rect);
     painter->restore();

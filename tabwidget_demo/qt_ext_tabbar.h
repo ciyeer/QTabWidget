@@ -1,5 +1,5 @@
-#ifndef QtExtTabBar_H
-#define QtExtTabBar_H
+#ifndef QTEXTTABBAR_H
+#define QTEXTTABBAR_H
 
 #include <QtWidgets>
 
@@ -50,6 +50,7 @@ private:
     QSize tab_size_ = QSize(230, 40);
     QSize tab_add_btn_size_ = QSize(20, 20);
     bool draw_plus_btn_ = true;
+    
 };
 
-#endif // QtExtTabBar_H
+#endif // QTEXTTABBAR_H
