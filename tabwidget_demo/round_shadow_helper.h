@@ -31,7 +31,7 @@ class RoundShadowHelper {
   ~RoundShadowHelper() = default;
   void RoundShadow(QPainter* painter,
                    const QRect& rect,
-                   RoundDirection dirc = D_ALL);
+                   RoundDirection dire = D_ALL);
   void FillRoundShadow(QPainter* painter,
                        const QRect& rect,
                        const QColor& fill_color,
