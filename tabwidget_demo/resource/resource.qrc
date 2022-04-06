@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="">
+        <file>images/x-capture-options.png</file>
+    </qresource>
+</RCC>

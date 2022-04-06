@@ -4,7 +4,7 @@
 #include "qt_ext_tabbar.h"
 #include "round_shadow_helper.h"
 
-#define DEV_DEBUG
+// #define DEV_DEBUG
 
 class QExtTabBarStyle: public QProxyStyle
 {
@@ -156,14 +156,17 @@ void QtExtTabBar::_drawLeftIcon(QPainter *painter, const QStyleOptionTabV3 &opti
         return;
 #endif //
     painter->save();
-#ifdef DEV_DEBUG
-    painter->setPen(Qt::red);
     QPoint center_pos = QPoint(icon_padding_+icon_left_size_.width()/2+option.rect.x(), 
                                 option.rect.y()+(option.rect.height()-icon_left_size_.height())/2+icon_left_size_.height()/2);
-    QRect temp_rect = QRect(QPoint(0, 0), icon_left_size_);
-    temp_rect.moveCenter(center_pos);
-    painter->drawRect(temp_rect);
+    QRect draw_rect = QRect(QPoint(0, 0), icon_left_size_);
+    draw_rect.moveCenter(center_pos);
+#ifdef DEV_DEBUG
+    painter->setPen(Qt::red);
+    painter->drawRect(draw_rect);
 #endif // DEV_DEBUG
+
+    painter->drawPixmap(draw_rect, icon_left_pixmap_);
+
     painter->restore();
 }
 
@@ -175,14 +178,15 @@ void QtExtTabBar::_drawRightIcon(QPainter *painter, const QStyleOptionTabV3 &opt
         return;
 #endif //
     painter->save();
-#ifdef DEV_DEBUG
-    painter->setPen(Qt::red);
     QPoint center_pos = QPoint(option.rect.x()+option.rect.width()-icon_padding_-icon_right_size_.width()/2, 
                                 option.rect.y()+(option.rect.height()-icon_right_size_.height())/2+icon_right_size_.height()/2);
-    QRect temp_rect = QRect(QPoint(0, 0), icon_right_size_);
-    temp_rect.moveCenter(center_pos);
-    painter->drawRect(temp_rect);
+    QRect draw_rect = QRect(QPoint(0, 0), icon_right_size_);
+    draw_rect.moveCenter(center_pos);
+#ifdef DEV_DEBUG
+    painter->setPen(Qt::red);
+    painter->drawRect(draw_rect);
 #endif // DEBUG
+    painter->drawPixmap(draw_rect, icon_left_pixmap_);
     painter->restore();
 }
 

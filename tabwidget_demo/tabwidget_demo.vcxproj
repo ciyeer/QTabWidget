@@ -121,6 +121,10 @@
       <ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription>
       <InputFile>%(FullPath)</InputFile>
     </QtUic>
+    <QtRcc>
+      <ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription>
+      <OutputFile>.\GeneratedFiles\qrc_%(Filename).cpp</OutputFile>
+    </QtRcc>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -176,6 +180,10 @@
       <DynamicSource>output</DynamicSource>
       <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;C:/QT/QT5.6.3/5.6.3/MSVC2013/mkspecs/$(Platform)-msvc2013;.;C:/QT/QT5.6.3/5.6.3/MSVC2013/include;C:/QT/QT5.6.3/5.6.3/MSVC2013/include/QtWidgets;C:/QT/QT5.6.3/5.6.3/MSVC2013/include/QtGui;C:/QT/QT5.6.3/5.6.3/MSVC2013/include/QtANGLE;C:/QT/QT5.6.3/5.6.3/MSVC2013/include/QtCore</IncludePath>
     </QtMoc>
+    <QtRcc>
+      <ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription>
+      <OutputFile>.\GeneratedFiles\qrc_%(Filename).cpp</OutputFile>
+    </QtRcc>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="draw_helper.cpp" />
@@ -204,12 +212,25 @@
   <ItemGroup>
     <ClInclude Include="common_ui_define.h" />
     <ClInclude Include="draw_helper.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="round_shadow_helper.h" />
     <ClInclude Include="ui_mainwindow.h" />
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="mainwindow.ui">
     </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="tabwidget_demo.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="resource\resource.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resource\images\x-capture-options.png">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </Image>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

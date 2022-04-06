@@ -81,16 +81,16 @@ private:
     static const int icon_padding_ = 8;
 
 private:
-    QMargins margins_ = {-20, 0, -20, 0};
+    QMargins margins_ = {-28, 0, -20, 0};
     QSize tab_size_ = QSize(230, 40);
     QSize tab_add_btn_size_ = QSize(20, 20);
     bool draw_plus_btn_ = true;
     TB_TEXT_COLOR  tb_text_color_;
     TB_BG_COLOR tb_bg_color_;
     QSize icon_left_size_ = QSize(16, 16);
-    QPixmap icon_left_pixmap_;
+    QPixmap icon_left_pixmap_ = QPixmap(":/images/x-capture-options.png");
     QSize icon_right_size_ = QSize(16, 16);;
-    QPixmap icon_right_pixmap_;
+    QPixmap icon_right_pixmap_ = QPixmap(":/images/x-capture-options.png");
 };
 
 #endif // QTEXTTABBAR_H
