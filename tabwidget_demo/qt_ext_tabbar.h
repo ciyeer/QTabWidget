@@ -12,9 +12,10 @@
 
 class RoundShadowHelper;
 
-//1.文字颜色可设置
+//- 1.文字颜色可设置
 //2.文字大小和字体设置
-//3.tab button大小和颜色可设置
+//- 3.tab button大小和颜色可设置
+//4. 鼠标滑过tab某些指定区域时，做出反应
 
 class QtExtTabBar : public QTabBar
 {
@@ -57,6 +58,9 @@ protected:
     virtual void paintEvent(QPaintEvent *event) override;
     virtual void mouseReleaseEvent(QMouseEvent *event) override;
     virtual void mousePressEvent(QMouseEvent *event) override;
+    virtual void mouseMoveEvent(QMouseEvent *event) override;
+    virtual bool event(QEvent *ev) override;
+
 
 private:
     int PointInTabRectIndex(const QPoint &point);
@@ -83,14 +87,18 @@ private:
 private:
     QMargins margins_ = {-28, 0, -20, 0};
     QSize tab_size_ = QSize(230, 40);
+    QSize last_tab_size_ = QSize(30, 40);
     QSize tab_add_btn_size_ = QSize(20, 20);
     bool draw_plus_btn_ = true;
     TB_TEXT_COLOR  tb_text_color_;
     TB_BG_COLOR tb_bg_color_;
+    QRect icon_left_rect_ = {0, 0, 0, 0};
     QSize icon_left_size_ = QSize(16, 16);
     QPixmap icon_left_pixmap_ = QPixmap(":/images/x-capture-options.png");
-    QSize icon_right_size_ = QSize(16, 16);;
+    QRect icon_right_rect_ = {0, 0, 0, 0};
+    QSize icon_right_size_ = QSize(16, 16);
     QPixmap icon_right_pixmap_ = QPixmap(":/images/x-capture-options.png");
+    QColor tab_btn_add_color_  = Qt::transparent;
 };
 
 #endif // QTEXTTABBAR_H

@@ -1,8 +1,11 @@
 #include <QPainter>
+#include <QDebug>
+#include <QDateTime>
 
 #include "draw_helper.h"
 #include "qt_ext_tabbar.h"
 #include "round_shadow_helper.h"
+#include "common_ui_define.h"
 
 // #define DEV_DEBUG
 
@@ -29,7 +32,7 @@ public:
     pixelMetric(PixelMetric metric, const QStyleOption *option, const QWidget *widget) const override
     {
         if (PM_TabBarScrollButtonWidth == metric) {
-            return 30;
+            return 40;
         } else {
             return QProxyStyle::pixelMetric(metric, option, widget);
         }
@@ -44,7 +47,7 @@ QtExtTabBar::QtExtTabBar(QWidget *parent) : QTabBar(parent)
 QSize QtExtTabBar::tabSizeHint(int index) const
 {
     if (index == count()-1 && draw_plus_btn_)
-        return tab_add_btn_size_;
+        return last_tab_size_;
     return tab_size_;
 }
 
@@ -74,6 +77,41 @@ void QtExtTabBar::mousePressEvent(QMouseEvent *event)
     }
 
     QTabBar::mousePressEvent(event);
+}
+
+void QtExtTabBar::mouseMoveEvent(QMouseEvent *event)
+{
+    if (icon_left_rect_.contains(event->pos())) {
+        int i = 0;
+    }
+    QTabBar::mouseMoveEvent(event);
+}
+
+bool QtExtTabBar::event(QEvent *ev) {
+
+    //TODO 在这里更新tab button 的属性，实属无奈之举。我从静态的角度看Qt的源码
+    // 发现一个问题：当鼠标明显不在tab add rect范围之内，但是从initStyleOption返回的
+    // option 结构体中state还是为QStyle::State_Selected
+    // 采用如下的方法workaround
+    if (ev->type() == QEvent::HoverMove
+        || ev->type() == QEvent::HoverEnter) {
+        QHoverEvent *he = static_cast<QHoverEvent *>(ev);
+        QRect tab_add_rect = tabRect(count()-1);
+        if (tab_add_rect.contains(he->pos())) {
+            tab_btn_add_color_ = CIRCLE_BG_COLOR;
+            update(tab_add_rect);
+        } else {
+            tab_btn_add_color_ = NORMAL_TAB_COLOR;
+            update(tab_add_rect);
+        }
+    } else if (ev->type() == QEvent::HoverLeave) {
+        QRect tab_add_rect = tabRect(count()-1);
+        tab_btn_add_color_ = NORMAL_TAB_COLOR;
+        update(tab_add_rect);
+    }
+
+    QTabBar::event(ev);
+    return true;
 }
 
 int QtExtTabBar::PointInTabRectIndex(const QPoint &point)
@@ -143,7 +181,12 @@ void QtExtTabBar::DrawPlusBtn(QPainter *painter)
     QRect draw_rect = QRect(QPoint(0, 0), tab_add_btn_size_);
     draw_rect.moveCenter(tabRect(last_index).center());
     QColor color = QStyle::State_MouseOver & option.state ? CIRCLE_BG_COLOR : NORMAL_TAB_COLOR;
-    DrawCircle::Draw(painter, draw_rect, color);
+    if (QStyle::State_Active & option.state) {
+        int i = 0;
+    } else if (QStyle::State_MouseOver & option.state ) {
+        int i = 0;
+    }
+    DrawCircle::Draw(painter, draw_rect, tab_btn_add_color_);
     DrawCharacter::DrawPlus(painter, draw_rect);
     painter->restore();
 }
@@ -158,14 +201,16 @@ void QtExtTabBar::_drawLeftIcon(QPainter *painter, const QStyleOptionTabV3 &opti
     painter->save();
     QPoint center_pos = QPoint(icon_padding_+icon_left_size_.width()/2+option.rect.x(), 
                                 option.rect.y()+(option.rect.height()-icon_left_size_.height())/2+icon_left_size_.height()/2);
-    QRect draw_rect = QRect(QPoint(0, 0), icon_left_size_);
-    draw_rect.moveCenter(center_pos);
+    icon_left_rect_ = QRect(QPoint(0, 0), icon_left_size_);
+    icon_left_rect_.moveCenter(center_pos);
 #ifdef DEV_DEBUG
     painter->setPen(Qt::red);
     painter->drawRect(draw_rect);
 #endif // DEV_DEBUG
 
-    painter->drawPixmap(draw_rect, icon_left_pixmap_);
+    QPoint pos = QCursor::pos();
+
+    painter->drawPixmap(icon_left_rect_, icon_left_pixmap_);
 
     painter->restore();
 }
