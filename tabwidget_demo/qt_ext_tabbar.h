@@ -96,7 +96,6 @@ protected:
     virtual void mousePressEvent(QMouseEvent *event) override;
     virtual void mouseMoveEvent(QMouseEvent *event) override;
     virtual bool event(QEvent *ev) override;
-    virtual void tabInserted(int index) override;
 
 private:
     int PointInTabRectIndex(const QPoint &point);

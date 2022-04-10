@@ -17,9 +17,11 @@ public:
 
 protected:
     virtual void paintEvent(QPaintEvent *ev) override;
+    virtual void tabInserted(int index) override;
 
 signals:
     void AddButtonClick();
+    void TabInserted(int index);
 
 protected slots:
     void OnAddButon();

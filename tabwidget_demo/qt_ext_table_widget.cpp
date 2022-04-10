@@ -24,11 +24,16 @@ void QtExtTabWidget::insertTab2(int index, QWidget *widget, const QString &label
 
 void QtExtTabWidget::paintEvent(QPaintEvent *ev)
 {
-    QPainter painter(this);
-    painter.setPen(Qt::red);
-    painter.drawRect(this->rect());
-
+//    QPainter painter(this);
+//    painter.setPen(Qt::red);
+//    painter.drawRect(this->rect());
+//
     QTabWidget::paintEvent(ev);
+}
+
+void QtExtTabWidget::tabInserted(int index) 
+{
+    emit TabInserted(index);
 }
 
 void QtExtTabWidget::OnAddButon()

@@ -161,24 +161,6 @@ bool QtExtTabBar::event(QEvent *ev) {
     return true;
 }
 
-void QtExtTabBar::tabInserted(int index)
-{
-    return;
-    if (index == count()-1 && tab_add_button_.draw_plus_btn_)
-        return;
-    QPushButton *button = new QPushButton();
-    button->setFixedSize(16, 16);
-    button->setStyleSheet("border-image: url(:/images/x-capture-options.png);");
-    this->setTabButton(index, QTabBar::LeftSide, button);
-    button = new QPushButton();
-    button->setFixedSize(16, 16);
-
-    connect(button, SIGNAL(clicked()), this, SLOT(OnRightWidgetClicked()));
-    button->setStyleSheet("QPushButton{border-image: url(:/images/close.png)}"
-                          "QPushButton:hover{border-image: url(:/images/close_hover.png)}");
-    this->setTabButton(index, QTabBar::RightSide, button);
-}
-
 int QtExtTabBar::PointInTabRectIndex(const QPoint &point)
 {
     for (int i = 0 ; i < count(); ++i) {
