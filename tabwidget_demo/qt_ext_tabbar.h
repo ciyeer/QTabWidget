@@ -3,27 +3,21 @@
 
 #include <QtWidgets>
 
-#define COLOR_HOVER         "#D6D6D6"
-#define COLOR_SELECT_0      "#4F94CD"
-#define COLOR_SELECT_1      "#EEB422"
-#define COLOR_NORMAL_0      "#63B8FF"
-#define COLOR_NORMAL_1      "#FFFF00"
-#define COLOR_MARK          "#FF3333"
-
 class RoundShadowHelper;
 
 //- 1.文字颜色可设置
 //2.文字大小和字体设置
 //- 3.tab button大小和颜色可设置
-//4. 鼠标滑过tab某些指定区域时，做出反应
-//5. 采用style提供的借口绘制icon和button
+//- 4. 鼠标滑过tab某些指定区域时，做出反应
+//- 5. 采用style提供的借口绘制icon和button
 
 class QtExtTabBar;
 
 class QExtTabBarStyle: public QProxyStyle
 {
 public:
-    QExtTabBarStyle(QtExtTabBar *tab_bar, QStyle *parent = Q_NULLPTR) : QProxyStyle(parent) {}
+    QExtTabBarStyle(QtExtTabBar *tab_bar, QStyle *parent = Q_NULLPTR) 
+        : QProxyStyle(parent) { tab_bar_ = tab_bar; }
     ~QExtTabBarStyle() = default;
 
     void drawPrimitive(PrimitiveElement pe, 
@@ -89,6 +83,9 @@ public:
 
     TB_TEXT_COLOR TBTextColor() const { return tb_text_color_;}
     void setTBTextColor(TB_TEXT_COLOR text_color) { tb_text_color_ = text_color; update();}
+    
+    TB_BG_COLOR TBBGColor() const { return tb_bg_color_;}
+    void setTBBGColor(TB_BG_COLOR bg_color) { tb_bg_color_ = bg_color; update();}
 
 protected:
     QSize tabSizeHint(int index) const;
@@ -112,10 +109,11 @@ private:
                         const QStyleOptionTabV3 &option);
 
 Q_SIGNALS:
-    void BtnClicked();
+    void AddBtnClicked();
+    void CloseTab(int index);
 
-private:
-    static const int icon_padding_ = 8;
+protected slots:
+    void OnRightWidgetClicked();
 
 private:
     QMargins margins_ = {-28, 0, -20, 0};

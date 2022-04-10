@@ -103,7 +103,7 @@ void QtExtTabBar::mousePressEvent(QMouseEvent *event)
 {
     int index = PointInTabRectIndex(event->pos());
     if (index == count()-1 && tab_add_button_.draw_plus_btn_) {
-        emit BtnClicked();
+        emit AddBtnClicked();
         return;
     }
 
@@ -151,6 +151,7 @@ void QtExtTabBar::tabInserted(int index)
     button = new QPushButton();
     button->setFixedSize(16, 16);
 
+    connect(button, SIGNAL(clicked()), this, SLOT(OnRightWidgetClicked()));
     button->setStyleSheet("QPushButton{border-image: url(:/images/close.png)}"
                           "QPushButton:hover{border-image: url(:/images/close_hover.png)}");
     this->setTabButton(0, QTabBar::RightSide, button);
@@ -223,4 +224,16 @@ void QtExtTabBar::DrawPlusBtn(QPainter *painter)
     DrawCircle::Draw(painter, draw_rect, tab_btn_add_color_);
     DrawCharacter::DrawPlus(painter, draw_rect);
     painter->restore();
+}
+
+void QtExtTabBar::OnRightWidgetClicked()
+{
+    QObject *obj = (QObject *)(sender());
+    for (int i = 0 ; i < count(); ++i) {
+       QWidget *widget = tabButton(i, QTabBar::RightSide); 
+       if (widget != obj)
+           continue;
+       emit CloseTab(i);
+       break;
+    }
 }

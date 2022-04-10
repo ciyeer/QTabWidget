@@ -12,8 +12,17 @@ class QtExtTabWidget : public QTabWidget
 
 public:
     explicit QtExtTabWidget(QWidget *parent = 0);
+    ~QtExtTabWidget() = default;
 
+protected:
     virtual void paintEvent(QPaintEvent *ev) override;
+
+signals:
+    void AddButtonClick();
+
+protected slots:
+    void OnAddButon();
+    void OnCloseTab(int index);
 
 };
 

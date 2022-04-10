@@ -40,8 +40,11 @@ public:
 
 QtExtTabWidget::QtExtTabWidget(QWidget *parent)
 {
-    setTabBar(new QtExtTabBar(this));
-    // this->tabBar()->setStyle(new CustomTabStyle());
+    QtExtTabBar *tab_bar = new QtExtTabBar(this);
+    setTabBar(tab_bar);
+    connect(tab_bar, SIGNAL(AddBtnClicked()), this, SLOT(OnAddButon()));
+    connect(tab_bar, SIGNAL(AddBtnClicked()), this, SIGNAL(AddBtnClicked()));
+    connect(tab_bar, SIGNAL(CloseTab(int)), this, SLOT(OnCloseTab(int)));
 }
 
 void QtExtTabWidget::paintEvent(QPaintEvent *ev)
@@ -51,4 +54,14 @@ void QtExtTabWidget::paintEvent(QPaintEvent *ev)
     painter.drawRect(this->rect());
 
     QTabWidget::paintEvent(ev);
+}
+
+void QtExtTabWidget::OnAddButon()
+{
+    this->insertTab(this->tabBar()->count()-1, new QWidget(), "test");
+}
+
+void QtExtTabWidget::OnCloseTab(int index)
+{
+    this->removeTab(index); 
 }
