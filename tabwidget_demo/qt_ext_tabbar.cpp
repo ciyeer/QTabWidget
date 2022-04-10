@@ -181,8 +181,6 @@ void QtExtTabBar::DrawTab(QPainter *painter)
         QRect draw_rect = QRect(QPoint(rect.x()+border, rect.y() + border), QSize(rect.width()-border*2, rect.height()-border*2));
         _drawTabBg(painter, helper, option, draw_rect, rect);
         _drawTabText(painter, draw_rect, option);
-        // _drawLeftIcon(painter, option);
-        // _drawRightIcon(painter, option);
     }
     painter->restore();
 }
@@ -225,56 +223,4 @@ void QtExtTabBar::DrawPlusBtn(QPainter *painter)
     DrawCircle::Draw(painter, draw_rect, tab_btn_add_color_);
     DrawCharacter::DrawPlus(painter, draw_rect);
     painter->restore();
-}
-
-void QtExtTabBar::_drawLeftIcon(QPainter *painter, const QStyleOptionTabV3 &option)
-{
-    Q_ASSERT(nullptr != painter); 
-#ifndef DEV_DEBUG
-    if (!_isDrawLeftIcon())
-        return;
-#endif //
-    painter->save();
-    QPoint center_pos = QPoint(icon_padding_+icon_left_size_.width()/2+option.rect.x(), 
-                                option.rect.y()+(option.rect.height()-icon_left_size_.height())/2+icon_left_size_.height()/2);
-    icon_left_rect_ = QRect(QPoint(0, 0), icon_left_size_);
-    icon_left_rect_.moveCenter(center_pos);
-#ifdef DEV_DEBUG
-    painter->setPen(Qt::red);
-    painter->drawRect(draw_rect);
-#endif // DEV_DEBUG
-
-    painter->drawPixmap(icon_left_rect_, icon_left_pixmap_);
-
-    painter->restore();
-}
-
-void QtExtTabBar::_drawRightIcon(QPainter *painter, const QStyleOptionTabV3 &option)
-{
-    Q_ASSERT(nullptr != painter); 
-#ifndef DEV_DEBUG
-    if (!_isDrawRightIcon())
-        return;
-#endif //
-    painter->save();
-    QPoint center_pos = QPoint(option.rect.x()+option.rect.width()-icon_padding_-icon_right_size_.width()/2, 
-                                option.rect.y()+(option.rect.height()-icon_right_size_.height())/2+icon_right_size_.height()/2);
-    QRect draw_rect = QRect(QPoint(0, 0), icon_right_size_);
-    draw_rect.moveCenter(center_pos);
-#ifdef DEV_DEBUG
-    painter->setPen(Qt::red);
-    painter->drawRect(draw_rect);
-#endif // DEBUG
-    painter->drawPixmap(draw_rect, icon_left_pixmap_);
-    painter->restore();
-}
-
-bool QtExtTabBar::_isDrawLeftIcon() const 
-{
-    return !icon_left_pixmap_.isNull() && icon_left_size_.isValid();
-}
-
-bool QtExtTabBar::_isDrawRightIcon() const
-{
-    return !icon_right_pixmap_.isNull() && icon_right_size_.isValid();
 }

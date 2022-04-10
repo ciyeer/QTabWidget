@@ -74,12 +74,6 @@ public:
         QSize tab_add_btn_size_ = QSize(20, 20);
     };
 
-    struct TAB_ICON {
-        QRect tab_icon_rect_ = {0, 0, 0, 0};
-        QSize tab_icon_size_ = QSize(16, 16);
-        QPixmap icon_pixmap_ = QPixmap(":/images/x-capture-options.png");
-    };
-
 public:
     explicit QtExtTabBar(QWidget *parent = 0);
 
@@ -116,10 +110,6 @@ private:
     void _drawTabText(QPainter *painter, 
                         const QRect &draw_rect, 
                         const QStyleOptionTabV3 &option);
-    void _drawLeftIcon(QPainter *painter, const QStyleOptionTabV3 &option);
-    void _drawRightIcon(QPainter *painter, const QStyleOptionTabV3 &option);
-    bool _isDrawLeftIcon() const;
-    bool _isDrawRightIcon() const;
 
 Q_SIGNALS:
     void BtnClicked();
@@ -132,12 +122,6 @@ private:
     QSize tab_size_ = QSize(230, 40);
     TB_TEXT_COLOR  tb_text_color_;
     TB_BG_COLOR tb_bg_color_;
-    QRect icon_left_rect_ = {0, 0, 0, 0};
-    QSize icon_left_size_ = QSize(16, 16);
-    QPixmap icon_left_pixmap_ = QPixmap(":/images/x-capture-options.png");
-    QRect icon_right_rect_ = {0, 0, 0, 0};
-    QSize icon_right_size_ = QSize(16, 16);
-    QPixmap icon_right_pixmap_ = QPixmap(":/images/x-capture-options.png");
     QColor tab_btn_add_color_  = Qt::transparent;
     TAB_ADD_BUTTON tab_add_button_;
 };
