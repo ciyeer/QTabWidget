@@ -21,7 +21,7 @@
        <string notr="true">background-color:transparent;</string>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>-1</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideRight</enum>
@@ -38,27 +38,6 @@
       <property name="tabBarAutoHide">
        <bool>false</bool>
       </property>
-      <widget class="QWidget" name="tab1">
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(255, 85, 127);</string>
-       </property>
-       <attribute name="title">
-        <string>项目一</string>
-       </attribute>
-      </widget>
-      <widget class="QWidget" name="tab2">
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(0, 0, 0);</string>
-       </property>
-       <attribute name="title">
-        <string>项目二项目二项目二项目二项目二项目二项目二项目二项目二项目二项目二项目二项目二项目二项目二项目二项目二项目二项目二项目二项目二项目二项目二项目二项目二项目二项目二项目二项目二项目二项目二项目二</string>
-       </attribute>
-      </widget>
-      <widget class="QWidget" name="tab">
-       <attribute name="title">
-        <string>Page</string>
-       </attribute>
-      </widget>
      </widget>
     </item>
    </layout>

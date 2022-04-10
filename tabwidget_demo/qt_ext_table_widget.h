@@ -3,7 +3,6 @@
 
 #include "qt_ext_tabbar.h"
 
-#include <QPaintEvent>
 #include <QTabWidget>
 
 class QtExtTabWidget : public QTabWidget
@@ -13,6 +12,8 @@ class QtExtTabWidget : public QTabWidget
 public:
     explicit QtExtTabWidget(QWidget *parent = 0);
     ~QtExtTabWidget() = default;
+    void addTab2(QWidget *widget, const QString &label);
+    void insertTab2(int index, QWidget *widget, const QString &label);
 
 protected:
     virtual void paintEvent(QPaintEvent *ev) override;

@@ -69,7 +69,7 @@ public:
     };
 
 public:
-    explicit QtExtTabBar(QWidget *parent = 0);
+    explicit QtExtTabBar(QWidget *parent = 0, TAB_ADD_BUTTON tab_add_button = TAB_ADD_BUTTON());
 
     QSize tabSize() const { return tab_size_; }
     void setTabSize(const QSize &tab_size) { tab_size_ = tab_size; }
@@ -86,6 +86,8 @@ public:
     
     TB_BG_COLOR TBBGColor() const { return tb_bg_color_;}
     void setTBBGColor(TB_BG_COLOR bg_color) { tb_bg_color_ = bg_color; update();}
+
+    void UpdateTab(int index);
 
 protected:
     QSize tabSizeHint(int index) const;

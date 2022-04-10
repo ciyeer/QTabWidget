@@ -73,9 +73,28 @@ QRect QExtTabBarStyle::calcIconRect(bool left, const QStyleOption *option) const
     return button_rect;
 }
 
-QtExtTabBar::QtExtTabBar(QWidget *parent) : QTabBar(parent)
+QtExtTabBar::QtExtTabBar(QWidget *parent, TAB_ADD_BUTTON tab_add_button) : QTabBar(parent)
 {
     this->setStyle(new QExtTabBarStyle(this));
+    if (tab_add_button.draw_plus_btn_) 
+        addTab(0);
+}
+
+void QtExtTabBar::UpdateTab(int index)
+{
+    if (index == count()-1 && tab_add_button_.draw_plus_btn_)
+        return;
+    QPushButton *button = new QPushButton();
+    button->setFixedSize(this->iconSize());
+    button->setStyleSheet("border-image: url(:/images/x-capture-options.png);");
+    this->setTabButton(index, QTabBar::LeftSide, button);
+    button = new QPushButton();
+    button->setFixedSize(this->iconSize());
+
+    connect(button, SIGNAL(clicked()), this, SLOT(OnRightWidgetClicked()));
+    button->setStyleSheet("QPushButton{border-image: url(:/images/close.png)}"
+                          "QPushButton:hover{border-image: url(:/images/close_hover.png)}");
+    this->setTabButton(index, QTabBar::RightSide, button);
 }
 
 QSize QtExtTabBar::tabSizeHint(int index) const
@@ -144,17 +163,20 @@ bool QtExtTabBar::event(QEvent *ev) {
 
 void QtExtTabBar::tabInserted(int index)
 {
+    return;
+    if (index == count()-1 && tab_add_button_.draw_plus_btn_)
+        return;
     QPushButton *button = new QPushButton();
     button->setFixedSize(16, 16);
     button->setStyleSheet("border-image: url(:/images/x-capture-options.png);");
-    this->setTabButton(0, QTabBar::LeftSide, button);
+    this->setTabButton(index, QTabBar::LeftSide, button);
     button = new QPushButton();
     button->setFixedSize(16, 16);
 
     connect(button, SIGNAL(clicked()), this, SLOT(OnRightWidgetClicked()));
     button->setStyleSheet("QPushButton{border-image: url(:/images/close.png)}"
                           "QPushButton:hover{border-image: url(:/images/close_hover.png)}");
-    this->setTabButton(0, QTabBar::RightSide, button);
+    this->setTabButton(index, QTabBar::RightSide, button);
 }
 
 int QtExtTabBar::PointInTabRectIndex(const QPoint &point)

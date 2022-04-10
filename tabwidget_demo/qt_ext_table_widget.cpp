@@ -1,42 +1,6 @@
 ﻿#include "qt_ext_table_widget.h"
 
-#include <qpainter.h>
-class CustomTabStyle : public QProxyStyle
-{
-public:
-    QSize sizeFromContents(ContentsType type, const QStyleOption *option, const QSize &size, const QWidget *widget) const
-    {
-        QSize s = QProxyStyle::sizeFromContents(type, option, size, widget);
-        if (type == QStyle::CT_TabBarTab) {
-            s.transpose();
-            s.rwidth() = 100; // 设置每个tabBar中item的大小
-            s.rheight() = 68;
-        }
-        return s;
-    }
-    virtual void drawPrimitive(PrimitiveElement pe, const QStyleOption *opt, QPainter *p,
-        const QWidget *w = Q_NULLPTR) const
-    {
-        if (pe == QStyle::PE_IndicatorTabTear) {
-            int i = 0;
-        }
-        QProxyStyle::drawPrimitive(pe, opt, p, w);
-    }
-
-    void drawControl(ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
-    {
-        if (element == CE_TabBarTabLabel)
-        {
-        }
-
-        if (element == CE_TabBarTab)
-        {
-            QProxyStyle::drawControl(element, option, painter, widget);
-        }
-
-    }
-};
-
+#include <QPainter>
 
 QtExtTabWidget::QtExtTabWidget(QWidget *parent)
 {
@@ -45,6 +9,17 @@ QtExtTabWidget::QtExtTabWidget(QWidget *parent)
     connect(tab_bar, SIGNAL(AddBtnClicked()), this, SLOT(OnAddButon()));
     connect(tab_bar, SIGNAL(AddBtnClicked()), this, SIGNAL(AddBtnClicked()));
     connect(tab_bar, SIGNAL(CloseTab(int)), this, SLOT(OnCloseTab(int)));
+}
+
+void QtExtTabWidget::addTab2(QWidget *widget, const QString &label)
+{
+    insertTab2(-1, widget, label);
+}
+
+void QtExtTabWidget::insertTab2(int index, QWidget *widget, const QString &label)
+{
+    int tab_index = this->insertTab(index, widget, label);
+    static_cast<QtExtTabBar *>(this->tabBar())->UpdateTab(tab_index);
 }
 
 void QtExtTabWidget::paintEvent(QPaintEvent *ev)
@@ -58,7 +33,7 @@ void QtExtTabWidget::paintEvent(QPaintEvent *ev)
 
 void QtExtTabWidget::OnAddButon()
 {
-    this->insertTab(this->tabBar()->count()-1, new QWidget(), "test");
+    this->insertTab2(this->tabBar()->count()-1, new QWidget(), "test");
 }
 
 void QtExtTabWidget::OnCloseTab(int index)
