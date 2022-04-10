@@ -16,6 +16,36 @@ class RoundShadowHelper;
 //2.文字大小和字体设置
 //- 3.tab button大小和颜色可设置
 //4. 鼠标滑过tab某些指定区域时，做出反应
+//5. 采用style提供的借口绘制icon和button
+
+class QtExtTabBar;
+
+class QExtTabBarStyle: public QProxyStyle
+{
+public:
+    QExtTabBarStyle(QtExtTabBar *tab_bar, QStyle *parent = Q_NULLPTR) : QProxyStyle(parent) {}
+    ~QExtTabBarStyle() = default;
+
+    void drawPrimitive(PrimitiveElement pe, 
+                    const QStyleOption *option, 
+                    QPainter *painter,
+                    const QWidget *widget = Q_NULLPTR) const Q_DECL_OVERRIDE;
+    int pixelMetric(PixelMetric metric, 
+                const QStyleOption *option, 
+                const QWidget *widget) const Q_DECL_OVERRIDE;
+    
+    virtual QRect 
+    subElementRect(SubElement element, 
+                    const QStyleOption *option, 
+                    const QWidget *widget) const Q_DECL_OVERRIDE;
+    // 1.定制通用的接口
+
+private:
+    QRect calcIconRect(bool left, const QStyleOption *option) const;
+
+private:
+    QtExtTabBar *tab_bar_;
+};
 
 class QtExtTabBar : public QTabBar
 {
@@ -38,17 +68,30 @@ public:
         // QColor Disabled_ = Qt::gray;
     };
 
+    struct TAB_ADD_BUTTON {
+        bool draw_plus_btn_ = true;
+        QSize last_tab_size_ = QSize(30, 40);
+        QSize tab_add_btn_size_ = QSize(20, 20);
+    };
+
+    struct TAB_ICON {
+        QRect tab_icon_rect_ = {0, 0, 0, 0};
+        QSize tab_icon_size_ = QSize(16, 16);
+        QPixmap icon_pixmap_ = QPixmap(":/images/x-capture-options.png");
+    };
+
 public:
     explicit QtExtTabBar(QWidget *parent = 0);
 
     QSize tabSize() const { return tab_size_; }
     void setTabSize(const QSize &tab_size) { tab_size_ = tab_size; }
 
-    QSize tabBtnSize() const { return tab_add_btn_size_; }
-    void setTabBtnSize(const QSize &tab_btn_size) { tab_add_btn_size_ = tab_btn_size; }
-
-    bool drawPlusBtn() const { return draw_plus_btn_; }
-    void setPlusBtn(bool is_draw) { draw_plus_btn_ = is_draw; update(); }
+    TAB_ADD_BUTTON tabAddButton(TAB_ADD_BUTTON tab_add_button) { tab_add_button_ = tab_add_button; }
+    void setTabAddButton(const TAB_ADD_BUTTON &tab_add_button) { 
+        tab_add_button_ = tab_add_button; 
+        if (tab_add_button_.draw_plus_btn_) 
+            update();
+    }
 
     TB_TEXT_COLOR TBTextColor() const { return tb_text_color_;}
     void setTBTextColor(TB_TEXT_COLOR text_color) { tb_text_color_ = text_color; update();}
@@ -60,7 +103,7 @@ protected:
     virtual void mousePressEvent(QMouseEvent *event) override;
     virtual void mouseMoveEvent(QMouseEvent *event) override;
     virtual bool event(QEvent *ev) override;
-
+    virtual void tabInserted(int index) override;
 
 private:
     int PointInTabRectIndex(const QPoint &point);
@@ -87,9 +130,6 @@ private:
 private:
     QMargins margins_ = {-28, 0, -20, 0};
     QSize tab_size_ = QSize(230, 40);
-    QSize last_tab_size_ = QSize(30, 40);
-    QSize tab_add_btn_size_ = QSize(20, 20);
-    bool draw_plus_btn_ = true;
     TB_TEXT_COLOR  tb_text_color_;
     TB_BG_COLOR tb_bg_color_;
     QRect icon_left_rect_ = {0, 0, 0, 0};
@@ -99,6 +139,7 @@ private:
     QSize icon_right_size_ = QSize(16, 16);
     QPixmap icon_right_pixmap_ = QPixmap(":/images/x-capture-options.png");
     QColor tab_btn_add_color_  = Qt::transparent;
+    TAB_ADD_BUTTON tab_add_button_;
 };
 
 #endif // QTEXTTABBAR_H

@@ -1,6 +1,8 @@
 #include <QPainter>
 #include <QDebug>
 #include <QDateTime>
+#include <QStyleOption>
+#include <QLabel>
 
 #include "draw_helper.h"
 #include "qt_ext_tabbar.h"
@@ -9,45 +11,77 @@
 
 // #define DEV_DEBUG
 
-class QExtTabBarStyle: public QProxyStyle
+void QExtTabBarStyle::drawPrimitive(PrimitiveElement pe, 
+                const QStyleOption *option, 
+                QPainter *painter,
+                const QWidget *widget) const
 {
-public:
-    virtual void drawPrimitive(PrimitiveElement pe, const QStyleOption *option, QPainter *painter,
-        const QWidget *widget = Q_NULLPTR) const override
-    {
-        if (pe == QStyle::PE_IndicatorArrowLeft) {
-            painter->save();
-            painter->setPen(Qt::red);
-            painter->drawRect(option->rect);
-            painter->restore();
-            QProxyStyle::drawPrimitive(pe, option, painter, widget);
-        } else if (pe == QStyle::PE_IndicatorArrowRight) {
-            QProxyStyle::drawPrimitive(pe, option, painter, widget);
-        } else{
-            QProxyStyle::drawPrimitive(pe, option, painter, widget);
-        }
+    if (pe == QStyle::PE_IndicatorArrowLeft) {
+        painter->save();
+        painter->setPen(Qt::red);
+        painter->drawRect(option->rect);
+        painter->restore();
+        QProxyStyle::drawPrimitive(pe, option, painter, widget);
+    } else if (pe == QStyle::PE_IndicatorArrowRight) {
+        QProxyStyle::drawPrimitive(pe, option, painter, widget);
+    } else{
+        QProxyStyle::drawPrimitive(pe, option, painter, widget);
     }
+}
 
-    virtual int 
-    pixelMetric(PixelMetric metric, const QStyleOption *option, const QWidget *widget) const override
-    {
-        if (PM_TabBarScrollButtonWidth == metric) {
-            return 40;
-        } else {
-            return QProxyStyle::pixelMetric(metric, option, widget);
-        }
+int QExtTabBarStyle::pixelMetric(PixelMetric metric, 
+            const QStyleOption *option, 
+            const QWidget *widget) const
+{
+    if (PM_TabBarScrollButtonWidth == metric) {
+        return 40;
+    } else {
+        return QProxyStyle::pixelMetric(metric, option, widget);
     }
-};
+}
+
+QRect QExtTabBarStyle::subElementRect(SubElement element, 
+                                        const QStyleOption *option, 
+                                        const QWidget *widget) const
+{
+    if (SE_TabBarTabLeftButton == element) {
+        return calcIconRect(true, option);
+    } else if (SE_TabBarTabRightButton == element) {
+        return calcIconRect(false, option);
+    } else {
+        return QProxyStyle::subElementRect(element, option, widget);
+    }
+}
+
+QRect QExtTabBarStyle::calcIconRect(bool left, const QStyleOption *option) const
+{
+    const QStyleOptionTab *tab_option = qstyleoption_cast<const QStyleOptionTab *>(option);
+    QSize icon_size = tab_option->iconSize;
+    const QRect tab_rect = tab_option->rect;
+    QPoint center_pos;
+    QRect button_rect;
+    const int icon_padding = 8;
+    if (left) {
+        center_pos = QPoint(icon_padding+icon_size.width()/2+tab_rect.x(), 
+                            tab_rect.y()+(tab_rect.height()-icon_size.height())/2+icon_size.height()/2);
+    } else {
+        center_pos = QPoint(tab_rect.x()+tab_rect.width()-icon_padding-icon_size.width()/2, 
+                                tab_rect.y()+(tab_rect.height()-icon_size.height())/2+icon_size.height()/2);
+    }
+    button_rect = QRect(QPoint(0, 0), icon_size);
+    button_rect.moveCenter(center_pos);
+    return button_rect;
+}
 
 QtExtTabBar::QtExtTabBar(QWidget *parent) : QTabBar(parent)
 {
-    this->setStyle(new QExtTabBarStyle());
+    this->setStyle(new QExtTabBarStyle(this));
 }
 
 QSize QtExtTabBar::tabSizeHint(int index) const
 {
-    if (index == count()-1 && draw_plus_btn_)
-        return last_tab_size_;
+    if (index == count()-1 && tab_add_button_.draw_plus_btn_)
+        return tab_add_button_.last_tab_size_;
     return tab_size_;
 }
 
@@ -55,11 +89,8 @@ void QtExtTabBar::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
     DrawTab(&painter);
-    if (draw_plus_btn_)
+    if (tab_add_button_.draw_plus_btn_)
         DrawPlusBtn(&painter);
-    for(int index = 0 ; index < count(); index++)
-    {
-    }
 }
 
 void QtExtTabBar::mouseReleaseEvent(QMouseEvent *event)
@@ -71,7 +102,7 @@ void QtExtTabBar::mouseReleaseEvent(QMouseEvent *event)
 void QtExtTabBar::mousePressEvent(QMouseEvent *event)
 {
     int index = PointInTabRectIndex(event->pos());
-    if (index == count()-1 && draw_plus_btn_) {
+    if (index == count()-1 && tab_add_button_.draw_plus_btn_) {
         emit BtnClicked();
         return;
     }
@@ -81,9 +112,6 @@ void QtExtTabBar::mousePressEvent(QMouseEvent *event)
 
 void QtExtTabBar::mouseMoveEvent(QMouseEvent *event)
 {
-    if (icon_left_rect_.contains(event->pos())) {
-        int i = 0;
-    }
     QTabBar::mouseMoveEvent(event);
 }
 
@@ -114,6 +142,20 @@ bool QtExtTabBar::event(QEvent *ev) {
     return true;
 }
 
+void QtExtTabBar::tabInserted(int index)
+{
+    QPushButton *button = new QPushButton();
+    button->setFixedSize(16, 16);
+    button->setStyleSheet("border-image: url(:/images/x-capture-options.png);");
+    this->setTabButton(0, QTabBar::LeftSide, button);
+    button = new QPushButton();
+    button->setFixedSize(16, 16);
+
+    button->setStyleSheet("QPushButton{border-image: url(:/images/close.png)}"
+                          "QPushButton:hover{border-image: url(:/images/close_hover.png)}");
+    this->setTabButton(0, QTabBar::RightSide, button);
+}
+
 int QtExtTabBar::PointInTabRectIndex(const QPoint &point)
 {
     for (int i = 0 ; i < count(); ++i) {
@@ -130,7 +172,7 @@ void QtExtTabBar::DrawTab(QPainter *painter)
     RoundShadowHelper helper(6,4);
     int border = helper.GetShadowWidth()/2.0;
     painter->save();
-    int tab_count = draw_plus_btn_ ? count()-1 : count();
+    int tab_count = tab_add_button_.draw_plus_btn_ ? count()-1 : count();
     QStyleOptionTabV3 option;
     for (int index = 0; index < tab_count; index++) {
         QRect rect = tabRect(index);
@@ -139,8 +181,8 @@ void QtExtTabBar::DrawTab(QPainter *painter)
         QRect draw_rect = QRect(QPoint(rect.x()+border, rect.y() + border), QSize(rect.width()-border*2, rect.height()-border*2));
         _drawTabBg(painter, helper, option, draw_rect, rect);
         _drawTabText(painter, draw_rect, option);
-        _drawLeftIcon(painter, option);
-        _drawRightIcon(painter, option);
+        // _drawLeftIcon(painter, option);
+        // _drawRightIcon(painter, option);
     }
     painter->restore();
 }
@@ -178,14 +220,8 @@ void QtExtTabBar::DrawPlusBtn(QPainter *painter)
     int last_index = count()-1;
     QStyleOptionTabV3 option;
     initStyleOption(&option, last_index);
-    QRect draw_rect = QRect(QPoint(0, 0), tab_add_btn_size_);
+    QRect draw_rect = QRect(QPoint(0, 0), tab_add_button_.tab_add_btn_size_);
     draw_rect.moveCenter(tabRect(last_index).center());
-    QColor color = QStyle::State_MouseOver & option.state ? CIRCLE_BG_COLOR : NORMAL_TAB_COLOR;
-    if (QStyle::State_Active & option.state) {
-        int i = 0;
-    } else if (QStyle::State_MouseOver & option.state ) {
-        int i = 0;
-    }
     DrawCircle::Draw(painter, draw_rect, tab_btn_add_color_);
     DrawCharacter::DrawPlus(painter, draw_rect);
     painter->restore();
@@ -207,8 +243,6 @@ void QtExtTabBar::_drawLeftIcon(QPainter *painter, const QStyleOptionTabV3 &opti
     painter->setPen(Qt::red);
     painter->drawRect(draw_rect);
 #endif // DEV_DEBUG
-
-    QPoint pos = QCursor::pos();
 
     painter->drawPixmap(icon_left_rect_, icon_left_pixmap_);
 
