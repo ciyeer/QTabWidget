@@ -87,7 +87,7 @@ public:
     TB_BG_COLOR TBBGColor() const { return tb_bg_color_;}
     void setTBBGColor(TB_BG_COLOR bg_color) { tb_bg_color_ = bg_color; update();}
 
-    void UpdateTabButton(int index);
+    void setTabButton2(int index, QTabBar::ButtonPosition btn_pos, QPushButton *btn);
 
 protected:
     QSize tabSizeHint(int index) const;
@@ -98,6 +98,8 @@ protected:
     virtual bool event(QEvent *ev) override;
 
 private:
+    void setupUI(); 
+    void updateUI();
     int PointInTabRectIndex(const QPoint &point);
     void DrawTab(QPainter *painter);
     void DrawTabButton();

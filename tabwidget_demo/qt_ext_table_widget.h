@@ -14,6 +14,7 @@ public:
     ~QtExtTabWidget() = default;
     void addTab2(QWidget *widget, const QString &label);
     void insertTab2(int index, QWidget *widget, const QString &label);
+    void setTabButton2(int index, QTabBar::ButtonPosition, QPushButton *btn);
 
 protected:
     virtual void paintEvent(QPaintEvent *ev) override;
@@ -26,6 +27,9 @@ signals:
 protected slots:
     void OnAddButon();
     void OnCloseTab(int index);
+
+private:
+    QtExtTabBar *tab_bar_;
 
 };
 

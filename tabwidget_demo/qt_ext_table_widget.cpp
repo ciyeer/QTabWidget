@@ -4,11 +4,11 @@
 
 QtExtTabWidget::QtExtTabWidget(QWidget *parent)
 {
-    QtExtTabBar *tab_bar = new QtExtTabBar(this);
-    setTabBar(tab_bar);
-    connect(tab_bar, SIGNAL(AddBtnClicked()), this, SLOT(OnAddButon()));
-    connect(tab_bar, SIGNAL(AddBtnClicked()), this, SIGNAL(AddBtnClicked()));
-    connect(tab_bar, SIGNAL(CloseTab(int)), this, SLOT(OnCloseTab(int)));
+    tab_bar_ = new QtExtTabBar(this);
+    setTabBar(tab_bar_);
+    connect(tab_bar_, SIGNAL(AddBtnClicked()), this, SLOT(OnAddButon()));
+    connect(tab_bar_, SIGNAL(AddBtnClicked()), this, SIGNAL(AddBtnClicked()));
+    connect(tab_bar_, SIGNAL(CloseTab(int)), this, SLOT(OnCloseTab(int)));
 }
 
 void QtExtTabWidget::addTab2(QWidget *widget, const QString &label)
@@ -19,16 +19,16 @@ void QtExtTabWidget::addTab2(QWidget *widget, const QString &label)
 void QtExtTabWidget::insertTab2(int index, QWidget *widget, const QString &label)
 {
     int tab_index = this->insertTab(index, widget, label);
-    static_cast<QtExtTabBar *>(this->tabBar())->UpdateTabButton(tab_index);
     this->setCurrentIndex(tab_index);
+}
+
+void QtExtTabWidget::setTabButton2(int index, QTabBar::ButtonPosition btn_pos, QPushButton *btn)
+{
+    tab_bar_->setTabButton2(index, btn_pos, btn);
 }
 
 void QtExtTabWidget::paintEvent(QPaintEvent *ev)
 {
-//    QPainter painter(this);
-//    painter.setPen(Qt::red);
-//    painter.drawRect(this->rect());
-//
     QTabWidget::paintEvent(ev);
 }
 
@@ -45,4 +45,6 @@ void QtExtTabWidget::OnAddButon()
 void QtExtTabWidget::OnCloseTab(int index)
 {
     this->removeTab(index); 
+    if (this->currentIndex() == index && index-1>0)
+        this->setCurrentIndex(index-1);
 }

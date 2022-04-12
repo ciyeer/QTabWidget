@@ -104,21 +104,12 @@ QtExtTabBar::QtExtTabBar(QWidget *parent, TAB_ADD_BUTTON tab_add_button) : QTabB
         addTab(0);
 }
 
-void QtExtTabBar::UpdateTabButton(int index)
+void QtExtTabBar::setTabButton2(int index, QTabBar::ButtonPosition btn_pos, QPushButton *btn)
 {
-    if (index == count()-1 && tab_add_button_.draw_plus_btn_)
-        return;
-    QPushButton *button = new QPushButton();
-    button->setFixedSize(this->iconSize());
-    button->setStyleSheet("border-image: url(:/images/x-capture-options.png);");
-    this->setTabButton(index, QTabBar::LeftSide, button);
-    button = new QPushButton();
-    button->setFixedSize(this->iconSize());
-
-    connect(button, SIGNAL(clicked()), this, SLOT(OnRightWidgetClicked()));
-    button->setStyleSheet("QPushButton{border-image: url(:/images/close.png)}"
-                          "QPushButton:hover{border-image: url(:/images/close_hover.png)}");
-    this->setTabButton(index, QTabBar::RightSide, button);
+    btn->setFixedSize(this->iconSize());
+    if (QTabBar::RightSide == btn_pos) 
+        connect(btn, SIGNAL(clicked()), this, SLOT(OnRightWidgetClicked()));
+    this->setTabButton(index, btn_pos, btn);
 }
 
 QSize QtExtTabBar::tabSizeHint(int index) const
@@ -183,6 +174,16 @@ bool QtExtTabBar::event(QEvent *ev) {
 
     QTabBar::event(ev);
     return true;
+}
+
+void QtExtTabBar::setupUI()
+{
+
+}
+
+void QtExtTabBar::updateUI()
+{
+
 }
 
 int QtExtTabBar::PointInTabRectIndex(const QPoint &point)
