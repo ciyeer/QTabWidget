@@ -87,7 +87,7 @@ public:
     TB_BG_COLOR TBBGColor() const { return tb_bg_color_;}
     void setTBBGColor(TB_BG_COLOR bg_color) { tb_bg_color_ = bg_color; update();}
 
-    void UpdateTab(int index);
+    void UpdateTabButton(int index);
 
 protected:
     QSize tabSizeHint(int index) const;

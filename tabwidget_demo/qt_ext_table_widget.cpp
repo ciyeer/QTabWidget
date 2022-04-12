@@ -19,7 +19,8 @@ void QtExtTabWidget::addTab2(QWidget *widget, const QString &label)
 void QtExtTabWidget::insertTab2(int index, QWidget *widget, const QString &label)
 {
     int tab_index = this->insertTab(index, widget, label);
-    static_cast<QtExtTabBar *>(this->tabBar())->UpdateTab(tab_index);
+    static_cast<QtExtTabBar *>(this->tabBar())->UpdateTabButton(tab_index);
+    this->setCurrentIndex(tab_index);
 }
 
 void QtExtTabWidget::paintEvent(QPaintEvent *ev)
