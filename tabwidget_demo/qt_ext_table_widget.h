@@ -21,11 +21,11 @@ protected:
     virtual void tabInserted(int index) override;
 
 signals:
-    void AddButtonClick();
+    void AddBtnClicked();
     void TabInserted(int index);
+    void TabClosed(int index);
 
 protected slots:
-    void OnAddButon();
     void OnCloseTab(int index);
 
 private:

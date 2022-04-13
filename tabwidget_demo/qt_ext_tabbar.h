@@ -36,6 +36,9 @@ public:
 
 private:
     QRect calcIconRect(bool left, const QStyleOption *option) const;
+    void drawArrow(PrimitiveElement pe, const QStyleOption *option, 
+                    QPainter *painter,
+                    const QWidget *widget) const;
 
 private:
     QtExtTabBar *tab_bar_;

@@ -17,37 +17,9 @@ void QExtTabBarStyle::drawPrimitive(PrimitiveElement pe,
                 const QWidget *widget) const
 {
     if (pe == QStyle::PE_IndicatorArrowLeft) {
-        const QToolButton *tool_btn = static_cast<const QToolButton *>(widget);
-        if (!tool_btn->isVisible()) 
-            return;
-        painter->save();
-        const QStyleOptionTab *tab_option = qstyleoption_cast<const QStyleOptionTab *>(option);
-        QBrush rect_brush;
-        if (!tool_btn->isEnabled()) {
-            qDebug() << "disabled";
-            rect_brush = Qt::transparent;
-        } else if (tool_btn->underMouse()) {
-            qDebug() << "under mouse";
-            rect_brush = QColor(214, 214, 214);
-        } else {
-            qDebug() << "normal";
-            rect_brush = Qt::transparent;
-        }
-//        QPixmap pixmap(":/images/x-capture-options.png");
-//        if (pixmap.isNull()) 
-//            return;
-        QRect draw_rect = QRect(0, 0, 16, 16);
-        draw_rect.moveCenter(option->rect.center());
-        // painter->drawPixmap(draw_rect, pixmap);
-        // painter->setPen(Qt::NoPen);
-        // painter->setBrush(rect_brush);
-        // painter->drawRect(option->rect);
-        RoundShadowHelper round_helper;
-        round_helper.FillRoundShadow(painter, option->rect,rect_brush.color(), 4);
-        painter->restore();
-        QProxyStyle::drawPrimitive(pe, option, painter, widget);
+        drawArrow(pe, option, painter, widget);
     } else if (pe == QStyle::PE_IndicatorArrowRight) {
-        QProxyStyle::drawPrimitive(pe, option, painter, widget);
+        drawArrow(pe, option, painter, widget);
     } else{
         QProxyStyle::drawPrimitive(pe, option, painter, widget);
     }
@@ -95,6 +67,31 @@ QRect QExtTabBarStyle::calcIconRect(bool left, const QStyleOption *option) const
     button_rect = QRect(QPoint(0, 0), icon_size);
     button_rect.moveCenter(center_pos);
     return button_rect;
+}
+
+void QExtTabBarStyle::drawArrow(PrimitiveElement pe, const QStyleOption *option, 
+                                QPainter *painter,
+                                const QWidget *widget) const
+{
+    const QToolButton *tool_btn = static_cast<const QToolButton *>(widget);
+    if (nullptr != tool_btn && !tool_btn->isVisible()) 
+        return;
+    painter->save();
+    const QStyleOptionTab *tab_option = qstyleoption_cast<const QStyleOptionTab *>(option);
+    QBrush rect_brush;
+    if (!tool_btn->isEnabled()) {
+        rect_brush = Qt::transparent;
+    } else if (tool_btn->underMouse()) {
+        rect_brush = QColor(214, 214, 214);
+    } else {
+        rect_brush = Qt::transparent;
+    }
+    QRect draw_rect = QRect(0, 0, 16, 16);
+    draw_rect.moveCenter(option->rect.center());
+    RoundShadowHelper round_helper;
+    round_helper.FillRoundShadow(painter, option->rect,rect_brush.color(), 4);
+    painter->restore();
+    QProxyStyle::drawPrimitive(pe, option, painter, widget);
 }
 
 QtExtTabBar::QtExtTabBar(QWidget *parent, TAB_ADD_BUTTON tab_add_button) : QTabBar(parent)
@@ -178,12 +175,10 @@ bool QtExtTabBar::event(QEvent *ev) {
 
 void QtExtTabBar::setupUI()
 {
-
 }
 
 void QtExtTabBar::updateUI()
 {
-
 }
 
 int QtExtTabBar::PointInTabRectIndex(const QPoint &point)

@@ -16,6 +16,13 @@ public:
     ~MainWindow();
 
 private:
+    void setupUI();
+
+protected slots:
+    void OnTabInserted(int index);
+    void OnTabClosed(int index);
+    void OnAddBtnClicked();
+private:
     Ui::MainWindow *ui;
 };
 

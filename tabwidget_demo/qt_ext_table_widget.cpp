@@ -6,9 +6,9 @@ QtExtTabWidget::QtExtTabWidget(QWidget *parent)
 {
     tab_bar_ = new QtExtTabBar(this);
     setTabBar(tab_bar_);
-    connect(tab_bar_, SIGNAL(AddBtnClicked()), this, SLOT(OnAddButon()));
     connect(tab_bar_, SIGNAL(AddBtnClicked()), this, SIGNAL(AddBtnClicked()));
     connect(tab_bar_, SIGNAL(CloseTab(int)), this, SLOT(OnCloseTab(int)));
+    connect(tab_bar_, SIGNAL(CloseTab(int)), this, SLOT(TabClosed(int)));
 }
 
 void QtExtTabWidget::addTab2(QWidget *widget, const QString &label)
@@ -37,14 +37,10 @@ void QtExtTabWidget::tabInserted(int index)
     emit TabInserted(index);
 }
 
-void QtExtTabWidget::OnAddButon()
-{
-    this->insertTab2(this->tabBar()->count()-1, new QWidget(), "test");
-}
-
 void QtExtTabWidget::OnCloseTab(int index)
 {
     this->removeTab(index); 
+    emit TabClosed(index);
     if (this->currentIndex() == index && index-1>0)
         this->setCurrentIndex(index-1);
 }
