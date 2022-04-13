@@ -103,14 +103,14 @@ protected:
 private:
     void setupUI(); 
     void updateUI();
-    int PointInTabRectIndex(const QPoint &point);
-    void DrawTab(QPainter *painter);
-    void DrawTabButton();
-    void DrawPlusBtn(QPainter *painter);
-    void _drawTabBg(QPainter *painter, RoundShadowHelper &helper, 
+    int pointInTabRectIndex(const QPoint &point);
+    void drawTab(QPainter *painter);
+    void drawTabButton();
+    void drawPlusBtn(QPainter *painter);
+    void drawTabBg(QPainter *painter, RoundShadowHelper &helper, 
                     const QStyleOptionTabV3 &option, 
                     QRect draw_rect, QRect real_rect);
-    void _drawTabText(QPainter *painter, 
+    void drawTabText(QPainter *painter, 
                         const QRect &draw_rect, 
                         const QStyleOptionTabV3 &option);
 

@@ -119,20 +119,20 @@ QSize QtExtTabBar::tabSizeHint(int index) const
 void QtExtTabBar::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
-    DrawTab(&painter);
+    drawTab(&painter);
     if (tab_add_button_.draw_plus_btn_)
-        DrawPlusBtn(&painter);
+        drawPlusBtn(&painter);
 }
 
 void QtExtTabBar::mouseReleaseEvent(QMouseEvent *event)
 {
-    int i = PointInTabRectIndex(event->pos());
+    int i = pointInTabRectIndex(event->pos());
     QTabBar::mouseReleaseEvent(event);
 }
 
 void QtExtTabBar::mousePressEvent(QMouseEvent *event)
 {
-    int index = PointInTabRectIndex(event->pos());
+    int index = pointInTabRectIndex(event->pos());
     if (index == count()-1 && tab_add_button_.draw_plus_btn_) {
         emit AddBtnClicked();
         return;
@@ -181,7 +181,7 @@ void QtExtTabBar::updateUI()
 {
 }
 
-int QtExtTabBar::PointInTabRectIndex(const QPoint &point)
+int QtExtTabBar::pointInTabRectIndex(const QPoint &point)
 {
     for (int i = 0 ; i < count(); ++i) {
         QRect rect = tabRect(i);
@@ -192,7 +192,7 @@ int QtExtTabBar::PointInTabRectIndex(const QPoint &point)
     return -1;
 }
 
-void QtExtTabBar::DrawTab(QPainter *painter)
+void QtExtTabBar::drawTab(QPainter *painter)
 {
     RoundShadowHelper helper(6,4);
     int border = helper.GetShadowWidth()/2.0;
@@ -204,13 +204,13 @@ void QtExtTabBar::DrawTab(QPainter *painter)
         initStyleOption(&option, index);
         // draw background 
         QRect draw_rect = QRect(QPoint(rect.x()+border, rect.y() + border), QSize(rect.width()-border*2, rect.height()-border*2));
-        _drawTabBg(painter, helper, option, draw_rect, rect);
-        _drawTabText(painter, draw_rect, option);
+        drawTabBg(painter, helper, option, draw_rect, rect);
+        drawTabText(painter, draw_rect, option);
     }
     painter->restore();
 }
 
-void QtExtTabBar::_drawTabText(QPainter *painter, const QRect &draw_rect, const QStyleOptionTabV3 &option)
+void QtExtTabBar::drawTabText(QPainter *painter, const QRect &draw_rect, const QStyleOptionTabV3 &option)
 {
     // draw text
     QColor text_color = tb_text_color_.Normal_;
@@ -225,7 +225,7 @@ void QtExtTabBar::_drawTabText(QPainter *painter, const QRect &draw_rect, const 
     painter->drawText(text_rect, Qt::AlignLeft | Qt::AlignVCenter, text);
 }
 
-void QtExtTabBar::_drawTabBg(QPainter *painter, RoundShadowHelper &helper, 
+void QtExtTabBar::drawTabBg(QPainter *painter, RoundShadowHelper &helper, 
                             const QStyleOptionTabV3 &option, QRect draw_rect, QRect real_rect)
 {
     painter->setPen(Qt::NoPen);
@@ -237,7 +237,7 @@ void QtExtTabBar::_drawTabBg(QPainter *painter, RoundShadowHelper &helper,
     }
 }
 
-void QtExtTabBar::DrawPlusBtn(QPainter *painter)
+void QtExtTabBar::drawPlusBtn(QPainter *painter)
 {
     painter->save();
     int last_index = count()-1;
