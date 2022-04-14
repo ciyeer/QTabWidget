@@ -147,11 +147,6 @@ void QtExtTabBar::mouseMoveEvent(QMouseEvent *event)
 }
 
 bool QtExtTabBar::event(QEvent *ev) {
-
-    //TODO 在这里更新tab button 的属性，实属无奈之举。我从静态的角度看Qt的源码
-    // 发现一个问题：当鼠标明显不在tab add rect范围之内，但是从initStyleOption返回的
-    // option 结构体中state还是为QStyle::State_Selected
-    // 采用如下的方法workaround
     if (ev->type() == QEvent::HoverMove
         || ev->type() == QEvent::HoverEnter) {
         QHoverEvent *he = static_cast<QHoverEvent *>(ev);
@@ -169,8 +164,7 @@ bool QtExtTabBar::event(QEvent *ev) {
         update(tab_add_rect);
     }
 
-    QTabBar::event(ev);
-    return true;
+    return QTabBar::event(ev);
 }
 
 void QtExtTabBar::setupUI()

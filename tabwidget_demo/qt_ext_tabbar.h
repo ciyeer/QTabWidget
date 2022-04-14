@@ -77,7 +77,7 @@ public:
     QSize tabSize() const { return tab_size_; }
     void setTabSize(const QSize &tab_size) { tab_size_ = tab_size; }
 
-    TAB_ADD_BUTTON tabAddButton(TAB_ADD_BUTTON tab_add_button) { tab_add_button_ = tab_add_button; }
+    TAB_ADD_BUTTON tabAddButton() { return tab_add_button_; }
     void setTabAddButton(const TAB_ADD_BUTTON &tab_add_button) { 
         tab_add_button_ = tab_add_button; 
         if (tab_add_button_.draw_plus_btn_) 
