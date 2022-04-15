@@ -112,7 +112,7 @@ optional arguments:
 ### 2.用法
 
 ```c++
-ainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
