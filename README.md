@@ -79,9 +79,9 @@ optional arguments:
 
 #### 3.3 编译错误提示
 
-![image-20211220140923636](./images/01_compile_error_tip_rounder.png)
+![image-20211220140923636](./images/compiles/01_compile_error_tip_rounder.png)
 
-![03_compile_warning_tip_rounder](./images/03_compile_warning_tip_rounder.png)
+![03_compile_warning_tip_rounder](./images/compiles/03_compile_warning_tip_rounder.png)
 
 ## TODO list:
 
@@ -99,7 +99,7 @@ optional arguments:
 
 1.关于脚本中的--compileargs参数，其实就在如下图的一行中，比如这里的就是"Debug|x86"
 
-![image-20211220152108376](./images/02_vs_compile_args_rounder.png)
+![image-20211220152108376](./images/compiles/02_vs_compile_args_rounder.png)
 
 
 
