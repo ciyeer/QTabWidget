@@ -5,9 +5,8 @@
 	<file>images/close_hover.png</file>
 	<file>images/default_100_precent/caption_bg.png</file>
 	<file>images/default_100_precent/tab.png</file>
-	<file>images/default_100_precent/tab_hover.png</file>
 	<file>images/default_100_precent/tab_check.png</file>
 	<file>images/default_100_precent/tab_close_hover.png</file>
-	<file>images/default_100_precent/tab_close_pressed.png</file>
+	<file>images/default_100_precent/tab_close_press.png</file>
     </qresource>
 </RCC>
