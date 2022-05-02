@@ -62,10 +62,10 @@ void QtExtTabWidget::tabInserted(int index)
 
 void QtExtTabWidget::resizeEvent(QResizeEvent *ev)
 {
+    button_widget_->setFixedSize(QSize(kBUTTON_CONTAINER_WIDTH, tab_bar_->tabSize().height()));
     int tab_bar_width = this->width()-button_widget_->width();
-    tab_bar_->setFixedWidth(tab_bar_width);
-    button_widget_->setFixedSize(QSize(kBUTTON_CONTAINER_WIDTH, tab_bar_->height()));
     button_widget_->move(QPoint(tab_bar_width, 0));
+    tab_bar_->setFixedWidth(tab_bar_width);
     QTabWidget::resizeEvent(ev);
 }
 

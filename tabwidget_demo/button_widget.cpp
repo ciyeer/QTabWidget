@@ -24,6 +24,18 @@ void ButtonWidget::setMaxRestoreBtnVisible(bool max_visible, bool restore_visibl
 
 void ButtonWidget::setupUI()
 {
+    QStringList image_path;
+    image_path << ":/images/default_100_precent/restore.png" 
+                <<":/images/default_100_precent/restore_hover.png" 
+                << ":/images/default_100_precent/restore_pressed.png"
+                << "";
+    ui->btn_restore->setImagePath(image_path);
+    image_path.clear();
+    image_path << ":/images/default_100_precent/max.png" 
+                <<":/images/default_100_precent/max_hover.png" 
+                << ":/images/default_100_precent/max_pressed.png"
+                << "";
+    ui->btn_max->setImagePath(image_path);
     ui->btn_restore->setVisible(false);
 }
 
@@ -40,13 +52,9 @@ void ButtonWidget::on_btn_min_clicked()
 void ButtonWidget::on_btn_max_clicked()
 {
     emit maxClicked();
-//    ui->btn_max->setVisible(false);
-//    ui->btn_restore->setVisible(true);
 }
 
 void ButtonWidget::on_btn_restore_clicked()
 {
     emit restoreClicked();
-//    ui->btn_restore->setVisible(false);
-//    ui->btn_max->setVisible(true);
 }

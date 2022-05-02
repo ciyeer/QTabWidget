@@ -73,6 +73,7 @@ void MainWindow::OnMaxWnd()
 {
     this->showMaximized();
     ui->tabWidget->setMaxRestoreBtnVisible(false, true);
+    ui->tabWidget->currentWidget()->setFocus();
 }
 
 void MainWindow::OnRestoreWnd()

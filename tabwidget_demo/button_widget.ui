@@ -67,6 +67,12 @@
           <height>32</height>
          </size>
         </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
         <property name="styleSheet">
          <string notr="true">QPushButton{border-image: url(&quot;:/images/default_100_precent/min.png&quot;);background-color: transparent;}QPushButton:hover{border-image: url(&quot;:/images/default_100_precent/min_hover.png&quot;);background-color: transparent;}QPushButton:pressed{border-image: url(&quot;:/images/default_100_precent/min_pressed.png&quot;);background-color: transparent;}</string>
         </property>
@@ -79,7 +85,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btn_restore">
+       <widget class="QtExtButton" name="btn_restore">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -93,7 +99,10 @@
          </size>
         </property>
         <property name="mouseTracking">
-         <bool>true</bool>
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton{border-image: url(&quot;:/images/default_100_precent/restore.png&quot;);background-color: transparent;}QPushButton:hover{border-image: url(&quot;:/images/default_100_precent/restore_hover.png&quot;);background-color: transparent;}QPushButton:pressed{border-image: url(&quot;:/images/default_100_precent/restore_pressed.png&quot;);background-color: transparent;}</string>
@@ -107,7 +116,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btn_max">
+       <widget class="QtExtButton" name="btn_max">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -121,7 +130,10 @@
          </size>
         </property>
         <property name="mouseTracking">
-         <bool>true</bool>
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton{border-image: url(&quot;:/images/default_100_precent/max.png&quot;);background-color: transparent;}
@@ -150,6 +162,12 @@ QPushButton:pressed{border-image: url(&quot;:/images/default_100_precent/max_pre
           <height>32</height>
          </size>
         </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
         <property name="styleSheet">
          <string notr="true">QPushButton{border-image: url(&quot;:/images/default_100_precent/close.png&quot;);background-color: transparent;}QPushButton:hover{border-image: url(&quot;:/images/default_100_precent/close_hover.png&quot;);background-color: transparent;}QPushButton:pressed{border-image: url(&quot;:/images/default_100_precent/close_pressed.png&quot;);background-color: transparent;}</string>
         </property>
@@ -166,6 +184,13 @@ QPushButton:pressed{border-image: url(&quot;:/images/default_100_precent/max_pre
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QtExtButton</class>
+   <extends>QPushButton</extends>
+   <header>qt_ext_button.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="resource/resource.qrc"/>
  </resources>
