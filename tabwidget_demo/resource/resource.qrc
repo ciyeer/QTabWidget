@@ -9,5 +9,17 @@
 	<file>images/default_100_precent/tab_check.png</file>
 	<file>images/default_100_precent/tab_close_hover.png</file>
 	<file>images/default_100_precent/tab_close_pressed.png</file>
+	<file>images/default_100_precent/min.png</file>
+	<file>images/default_100_precent/min_hover.png</file>
+	<file>images/default_100_precent/min_pressed.png</file>
+	<file>images/default_100_precent/max.png</file>
+	<file>images/default_100_precent/max_hover.png</file>
+	<file>images/default_100_precent/max_pressed.png</file>
+	<file>images/default_100_precent/close.png</file>
+	<file>images/default_100_precent/close_hover.png</file>
+	<file>images/default_100_precent/close_pressed.png</file>
+	<file>images/default_100_precent/restore.png</file>
+	<file>images/default_100_precent/restore_hover.png</file>
+	<file>images/default_100_precent/restore_pressed.png</file>
     </qresource>
 </RCC>

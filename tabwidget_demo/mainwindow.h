@@ -22,6 +22,11 @@ protected slots:
     void OnTabInserted(int index);
     void OnTabClosed(int index);
     void OnAddBtnClicked();
+    void OnCloseWnd();
+    void OnMinWnd();
+    void OnMaxWnd();
+    void OnRestoreWnd();
+
 private:
     Ui::MainWindow *ui;
 };

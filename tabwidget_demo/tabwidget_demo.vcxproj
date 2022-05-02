@@ -186,6 +186,7 @@
     </QtRcc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="button_widget.cpp" />
     <ClCompile Include="draw_helper.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainwindow.cpp" />
@@ -210,6 +211,12 @@
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="button_widget.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\.;.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;.\debug;$(QTDIR)\mkspecs\win32-msvc2013</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">_WINDOWS;UNICODE;WIN32;QT_DEPRECATED_WARNINGS;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;DEBUG</Define>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\.;.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;.\release;$(QTDIR)\mkspecs\win32-msvc2013</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">_WINDOWS;UNICODE;WIN32;QT_DEPRECATED_WARNINGS;QT_NO_DEBUG;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;NDEBUG</Define>
+    </QtMoc>
     <ClInclude Include="common_ui_define.h" />
     <ClInclude Include="draw_helper.h" />
     <ClInclude Include="resource.h" />
@@ -217,6 +224,7 @@
     <ClInclude Include="ui_mainwindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtUic Include="button_widget.ui" />
     <QtUic Include="mainwindow.ui">
     </QtUic>
   </ItemGroup>

@@ -119,6 +119,7 @@ QSize QtExtTabBar::tabSizeHint(int index) const
 void QtExtTabBar::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
+    drawTabBar(&painter);
     drawTab(&painter);
     if (tab_add_button_.draw_plus_btn_)
         drawPlusBtn(&painter);
@@ -219,15 +220,49 @@ void QtExtTabBar::drawTabText(QPainter *painter, const QRect &draw_rect, const Q
     painter->drawText(text_rect, Qt::AlignLeft | Qt::AlignVCenter, text);
 }
 
+bool QtExtTabBar::isDrawTabBKImage() const
+{
+    return tab_bk_image_.is_draw_;
+}
+
+void QtExtTabBar::drawTabBKImage(QPainter *painter, const QRect &draw_rect, const QStyleOptionTabV3 &option)
+{
+    painter->setPen(Qt::NoPen);
+    painter->setRenderHint(QPainter::SmoothPixmapTransform);
+    if(QStyle::State_Selected & option.state) {
+        if (!tab_bk_image_.selected_image_.isNull())
+            painter->drawPixmap(draw_rect, tab_bk_image_.selected_image_);
+    } else if(QStyle::State_MouseOver & option.state) {
+        if (!tab_bk_image_.hover_image_.isNull())
+            painter->drawPixmap(draw_rect, tab_bk_image_.hover_image_);
+    } else {
+        if (!tab_bk_image_.normal_image_.isNull())
+            painter->drawPixmap(draw_rect, tab_bk_image_.normal_image_);
+    }
+}
+
+void QtExtTabBar::drawTabBar(QPainter *painter)
+{
+    if (tab_bar_bk_image_.isNull())
+        return;
+    painter->save(); 
+    painter->drawPixmap(this->rect(), tab_bar_bk_image_);
+    painter->restore(); 
+}
+
 void QtExtTabBar::drawTabBg(QPainter *painter, RoundShadowHelper &helper, 
                             const QStyleOptionTabV3 &option, QRect draw_rect, QRect real_rect)
 {
-    painter->setPen(Qt::NoPen);
-    if(QStyle::State_Selected & option.state) {
-        helper.RoundShadow(painter, real_rect);
-        helper.FillRoundShadow(painter, draw_rect, tb_bg_color_.Selected_, helper.GetRadius());
-    } else if(QStyle::State_MouseOver & option.state) {
-        helper.FillRoundShadow(painter, draw_rect, tb_bg_color_.Hover_, helper.GetRadius());
+    if (isDrawTabBKImage()) {
+        drawTabBKImage(painter, real_rect, option);
+    } else {
+        painter->setPen(Qt::NoPen);
+        if(QStyle::State_Selected & option.state) {
+            helper.RoundShadow(painter, real_rect);
+            helper.FillRoundShadow(painter, draw_rect, tb_bg_color_.Selected_, helper.GetRadius());
+        } else if(QStyle::State_MouseOver & option.state) {
+            helper.FillRoundShadow(painter, draw_rect, tb_bg_color_.Hover_, helper.GetRadius());
+        }
     }
 }
 

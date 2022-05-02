@@ -5,11 +5,11 @@
 
 class RoundShadowHelper;
 
-//- 1.ÎÄ×ÖÑÕÉ«¿ÉÉèÖÃ
-//2.ÎÄ×Ö´óĞ¡ºÍ×ÖÌåÉèÖÃ
-//- 3.tab button´óĞ¡ºÍÑÕÉ«¿ÉÉèÖÃ
-//- 4. Êó±ê»¬¹ıtabÄ³Ğ©Ö¸¶¨ÇøÓòÊ±£¬×ö³ö·´Ó¦
-//- 5. ²ÉÓÃstyleÌá¹©µÄ½è¿Ú»æÖÆiconºÍbutton
+//- 1.æ–‡å­—é¢œè‰²å¯è®¾ç½®
+//2.æ–‡å­—å¤§å°å’Œå­—ä½“è®¾ç½®
+//- 3.tab buttonå¤§å°å’Œé¢œè‰²å¯è®¾ç½®
+//- 4. é¼ æ ‡æ»‘è¿‡tabæŸäº›æŒ‡å®šåŒºåŸŸæ—¶ï¼Œåšå‡ºååº”
+//- 5. é‡‡ç”¨styleæä¾›çš„å€Ÿå£ç»˜åˆ¶iconå’Œbutton
 
 class QtExtTabBar;
 
@@ -32,7 +32,7 @@ public:
     subElementRect(SubElement element, 
                     const QStyleOption *option, 
                     const QWidget *widget) const Q_DECL_OVERRIDE;
-    // 1.¶¨ÖÆÍ¨ÓÃµÄ½Ó¿Ú
+    // 1.å®šåˆ¶é€šç”¨çš„æ¥å£
 
 private:
     QRect calcIconRect(bool left, const QStyleOption *option) const;
@@ -50,25 +50,49 @@ class QtExtTabBar : public QTabBar
 
 public:
     struct TB_TEXT_COLOR {
+        TB_TEXT_COLOR() {}        
+        TB_TEXT_COLOR(const QColor &normal, 
+                        const QColor &hover, 
+                        const QColor &select) 
+                        : Normal_(normal),
+                          Hover_(hover),
+                          Selected_(select)
+        {}        
+
         QColor Normal_ = Qt::black;
-        QColor Hover_ = Qt::yellow;
-        QColor Selected_ = Qt::red;
-        // no disabled property
-        // QColor Disabled_ = Qt::gray;
+        QColor Hover_ = Qt::black;
+        QColor Selected_ = Qt::black;
     };
 
     struct TB_BG_COLOR {
         QColor Normal_ = Qt::transparent;
         QColor Hover_ = QColor(214, 214, 214);
         QColor Selected_ = Qt::white;
-        // no disabled property
-        // QColor Disabled_ = Qt::gray;
     };
 
     struct TAB_ADD_BUTTON {
         bool draw_plus_btn_ = true;
         QSize last_tab_size_ = QSize(30, 40);
         QSize tab_add_btn_size_ = QSize(20, 20);
+    };
+
+    struct TB_BK_IMAGE {
+        TB_BK_IMAGE(bool is_draw, 
+        const QString &normal_image, 
+        const QString &hover_image,
+        const QString &selected_image) : is_draw_(is_draw)
+        {
+            normal_image_.load(normal_image);
+            hover_image_.load(hover_image);
+            selected_image_.load(selected_image);
+        }
+
+        TB_BK_IMAGE() {}
+
+        bool is_draw_ = false;
+        QPixmap normal_image_;
+        QPixmap hover_image_;
+        QPixmap selected_image_;
     };
 
 public:
@@ -89,8 +113,10 @@ public:
     
     TB_BG_COLOR TBBGColor() const { return tb_bg_color_;}
     void setTBBGColor(TB_BG_COLOR bg_color) { tb_bg_color_ = bg_color; update();}
+    void setTBBGImage(TB_BK_IMAGE tab_bk_image) { tab_bk_image_ = tab_bk_image; update();}
 
     void setTabButton2(int index, QTabBar::ButtonPosition btn_pos, QPushButton *btn);
+    void setTabBarBKImage(const QString &image_path) { tab_bar_bk_image_.load(image_path); }
 
 protected:
     QSize tabSizeHint(int index) const;
@@ -113,6 +139,9 @@ private:
     void drawTabText(QPainter *painter, 
                         const QRect &draw_rect, 
                         const QStyleOptionTabV3 &option);
+    bool isDrawTabBKImage() const;
+    void drawTabBKImage(QPainter *painter, const QRect &draw_rect, const QStyleOptionTabV3 &option);
+    void drawTabBar(QPainter *painter);
 
 Q_SIGNALS:
     void AddBtnClicked();
@@ -126,8 +155,10 @@ private:
     QSize tab_size_ = QSize(230, 40);
     TB_TEXT_COLOR  tb_text_color_;
     TB_BG_COLOR tb_bg_color_;
+    TB_BK_IMAGE tab_bk_image_;
     QColor tab_btn_add_color_  = Qt::transparent;
     TAB_ADD_BUTTON tab_add_button_;
+    QPixmap tab_bar_bk_image_;
 };
 
 #endif // QTEXTTABBAR_H

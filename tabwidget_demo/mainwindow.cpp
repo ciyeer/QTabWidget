@@ -8,7 +8,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     setupUI();
-    ui->tabWidget->addTab2(new QWidget(), tr("this is first tab"));
+    QWidget *widget = new QWidget();
+    widget->setStyleSheet("background-color:#FF00FF00");
+    ui->tabWidget->addTab2(widget, tr("this is first tab"));
 }
 
 MainWindow::~MainWindow()
@@ -18,9 +20,20 @@ MainWindow::~MainWindow()
 
 void MainWindow::setupUI()
 {
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
+
     connect(ui->tabWidget, SIGNAL(TabInserted(int)), this, SLOT(OnTabInserted(int)));
     connect(ui->tabWidget, SIGNAL(AddBtnClicked()), this, SLOT(OnAddBtnClicked()));
     connect(ui->tabWidget, SIGNAL(TabClosed(int)), this, SLOT(OnCloseTab(int)));
+    connect(ui->tabWidget, SIGNAL(closeWnd()), this, SLOT(OnCloseWnd()));
+    connect(ui->tabWidget, SIGNAL(minWnd()), this, SLOT(OnMinWnd()));
+    connect(ui->tabWidget, SIGNAL(maxWnd()), this, SLOT(OnMaxWnd()));
+    connect(ui->tabWidget, SIGNAL(restoreWnd()), this, SLOT(OnRestoreWnd()));
+    ui->tabWidget->setTabBKImage(":/images/default_100_precent/tab.png",
+                                ":/images/default_100_precent/tab_hover.png", 
+                                ":/images/default_100_precent/tab_check.png");
+    ui->tabWidget->setTabBarBKImage(":/images/default_100_precent/caption_bg.png");
+    ui->tabWidget->setTabTextColor(Qt::white, Qt::white, Qt::white);
 }
 
 void MainWindow::OnTabInserted(int index)
@@ -44,4 +57,26 @@ void MainWindow::OnTabClosed(int index)
 void MainWindow::OnAddBtnClicked()
 {
     ui->tabWidget->addTab2(new QWidget(), tr("this is first tab"));
+}
+
+void MainWindow::OnCloseWnd()
+{
+    this->close();
+}
+
+void MainWindow::OnMinWnd()
+{
+    this->showMinimized();
+}
+
+void MainWindow::OnMaxWnd()
+{
+    this->showMaximized();
+    ui->tabWidget->setMaxRestoreBtnVisible(false, true);
+}
+
+void MainWindow::OnRestoreWnd()
+{
+    this->showNormal();
+    ui->tabWidget->setMaxRestoreBtnVisible(true, false);
 }

@@ -63,6 +63,9 @@
     <ClCompile Include="draw_helper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="button_widget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="mainwindow.h">
@@ -72,6 +75,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="qt_ext_tabbar.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="button_widget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
@@ -94,6 +100,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="mainwindow.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="button_widget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
