@@ -34,6 +34,7 @@ void MainWindow::setupUI()
     connect(ui->tabWidget, SIGNAL(minWnd()), this, SLOT(OnMinWnd()));
     connect(ui->tabWidget, SIGNAL(maxWnd()), this, SLOT(OnMaxWnd()));
     connect(ui->tabWidget, SIGNAL(restoreWnd()), this, SLOT(OnRestoreWnd()));
+    connect(ui->tabWidget, SIGNAL(tabBarDoubleClicked()), this, SLOT(OnMaxOrRestore()));
     ui->tabWidget->setTabBKImage(":/images/default_100_precent/tab.png",
                                 ":/images/default_100_precent/tab_hover.png", 
                                 ":/images/default_100_precent/tab_check.png");
@@ -85,4 +86,16 @@ void MainWindow::OnRestoreWnd()
 {
     this->showNormal();
     ui->tabWidget->setMaxRestoreBtnVisible(true, false);
+}
+
+void MainWindow::OnMaxOrRestore()
+{
+    if (isMaximized()) {
+        this->showNormal();
+        ui->tabWidget->setMaxRestoreBtnVisible(true, false);
+    }
+    else {
+        this->showMaximized();
+        ui->tabWidget->setMaxRestoreBtnVisible(false, true);
+    }
 }

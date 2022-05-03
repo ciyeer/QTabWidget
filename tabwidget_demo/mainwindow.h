@@ -28,6 +28,7 @@ protected slots:
     void OnMinWnd();
     void OnMaxWnd();
     void OnRestoreWnd();
+    void OnMaxOrRestore();
 
 private:
     Ui::MainWindow *ui;

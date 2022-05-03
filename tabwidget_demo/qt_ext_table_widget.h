@@ -40,9 +40,12 @@ signals:
     void minWnd();
     void maxWnd();
     void restoreWnd();
+    void tabBarDoubleClicked();
 
 protected slots:
     void OnCloseTab(int index);
+    void OnTabBarDoubleClicked(int index);
+
 
 private:
     void setupUI();

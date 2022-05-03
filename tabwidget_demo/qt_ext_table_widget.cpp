@@ -77,6 +77,15 @@ void QtExtTabWidget::OnCloseTab(int index)
         this->setCurrentIndex(index-1);
 }
 
+void QtExtTabWidget::OnTabBarDoubleClicked(int index)
+{
+    if (-1 != index) {
+        OnCloseTab(index);
+    } else {
+        emit tabBarDoubleClicked();
+    }
+}
+
 void QtExtTabWidget::setupUI()
 {
     tab_bar_ = new QtExtTabBar(this);
@@ -90,4 +99,6 @@ void QtExtTabWidget::setupUI()
     connect(button_widget_, SIGNAL(minClicked()), this, SIGNAL(minWnd()));
     connect(button_widget_, SIGNAL(maxClicked()), this, SIGNAL(maxWnd()));
     connect(button_widget_, SIGNAL(restoreClicked()), this, SIGNAL(restoreWnd()));
+
+    connect(this, SIGNAL(tabBarDoubleClicked(int)), this, SLOT(OnTabBarDoubleClicked(int)));
 }
