@@ -191,6 +191,7 @@
     <ClCompile Include="draw_helper.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainwindow.cpp" />
+    <ClCompile Include="NcFrameLessHelper.cpp" />
     <ClCompile Include="qt_ext_button.cpp" />
     <ClCompile Include="qt_ext_tabbar.cpp" />
     <ClCompile Include="qt_ext_table_widget.cpp" />
@@ -221,6 +222,7 @@
     </QtMoc>
     <ClInclude Include="common_ui_define.h" />
     <ClInclude Include="draw_helper.h" />
+    <ClInclude Include="NcFrameLessHelper.h" />
     <ClInclude Include="qt_ext_button.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="round_shadow_helper.h" />

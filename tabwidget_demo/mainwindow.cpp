@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "qt_ext_table_widget.h"
+#include "NcFrameLessHelper.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -8,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     setupUI();
+
     QWidget *widget = new QWidget();
     widget->setStyleSheet("background-color:#FF00FF00");
     ui->tabWidget->addTab2(widget, tr("this is first tab"));
@@ -16,11 +18,14 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete frame_less_helper_;
 }
 
 void MainWindow::setupUI()
 {
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
+    frame_less_helper_ = new NcFramelessHelper();
+    frame_less_helper_->activeOnWithChildWidget(this, ui->tabWidget->tabBar());
 
     connect(ui->tabWidget, SIGNAL(TabInserted(int)), this, SLOT(OnTabInserted(int)));
     connect(ui->tabWidget, SIGNAL(AddBtnClicked()), this, SLOT(OnAddBtnClicked()));

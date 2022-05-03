@@ -7,6 +7,8 @@ namespace Ui {
 class MainWindow;
 }
 
+class NcFramelessHelper;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -29,6 +31,7 @@ protected slots:
 
 private:
     Ui::MainWindow *ui;
+    NcFramelessHelper *frame_less_helper_;
 };
 
 #endif // MAINWINDOW_H

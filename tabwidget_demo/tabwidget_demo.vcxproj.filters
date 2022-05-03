@@ -69,6 +69,9 @@
     <ClCompile Include="qt_ext_button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NcFrameLessHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="mainwindow.h">
@@ -102,6 +105,9 @@
     </ClInclude>
     <ClInclude Include="qt_ext_button.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NcFrameLessHelper.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
