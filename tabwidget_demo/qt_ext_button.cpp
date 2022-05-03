@@ -1,6 +1,5 @@
 #include "qt_ext_button.h"
 #include <QPainter>
-#include <QDebug>
 
 QtExtButton::QtExtButton(QWidget *parent)
     : QPushButton(parent)
@@ -30,13 +29,10 @@ void QtExtButton::paintEvent(QPaintEvent *ev)
         pixmap = &btn_image_.disabled_pixmap_;
     } else if (state_ == ButtonState::Normal) {
         pixmap = &btn_image_.normal_pixmap_;
-        qDebug() << "normal";
     } else if (state_ == ButtonState::Hover) {
         pixmap = &btn_image_.hover_pixmap_;
-        qDebug() << "hover";
     } else if (state_ == ButtonState::Pressed) {
         pixmap = &btn_image_.pressed_pixmap_;
-        qDebug() << "pressed";
     } else {
         return;
     }
