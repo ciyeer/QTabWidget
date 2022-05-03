@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "qt_ext_table_widget.h"
+#include "qt_ext_tab_widget.h"
 #include "NcFrameLessHelper.h"
 
 MainWindow::MainWindow(QWidget *parent) :

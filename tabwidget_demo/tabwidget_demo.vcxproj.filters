@@ -51,7 +51,7 @@
     <ClCompile Include="mainwindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="qt_ext_table_widget.cpp">
+    <ClCompile Include="qt_ext_tab_widget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="qt_ext_tabbar.cpp">
@@ -77,7 +77,7 @@
     <QtMoc Include="mainwindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="qt_ext_table_widget.h">
+    <QtMoc Include="qt_ext_tab_widget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="qt_ext_tabbar.h">

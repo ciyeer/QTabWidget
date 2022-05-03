@@ -66,7 +66,7 @@
   <customwidget>
    <class>QtExtTabWidget</class>
    <extends>QTabWidget</extends>
-   <header>qt_ext_table_widget.h</header>
+   <header>qt_ext_tab_widget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

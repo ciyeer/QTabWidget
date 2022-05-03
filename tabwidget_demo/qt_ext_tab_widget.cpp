@@ -1,4 +1,4 @@
-﻿#include "qt_ext_table_widget.h"
+﻿#include "qt_ext_tab_widget.h"
 #include "button_widget.h"
 
 #include <QPainter>
